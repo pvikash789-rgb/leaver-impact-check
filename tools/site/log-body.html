@@ -1,0 +1,73 @@
+<div class="wrap">
+<header>
+  <div class="eyebrow">{{NAME}} · Decision log · Vikash Kumar · Last updated 21 Oct 2026</div>
+  <h1>Decision log</h1>
+  <p>The main product decisions behind {{NAME}}, with the reasoning and the alternatives I considered. Newest at the bottom.</p>
+</header>
+
+<section aria-labelledby="ledger">
+  <h2 id="ledger">Decisions</h2>
+  <div class="ledger">
+
+    <article class="entry"><div class="id">01<span>19 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Problem selection</span></div>
+      <h3>Choose the problem on usefulness and viability</h3>
+      <dl><dt>Checks</dt><dd>Evidence of demand. Not already shipped or on the published roadmap. Data reachable through a public API or an admin export. Value can be measured. A working prototype in two to three weeks, provable on a free trial tenant.</dd>
+      <dt>Not used</dt><dd>Fit with my own past experience.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">02<span>19 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Dropped</span><span class="tag">Copilot Studio</span></div>
+      <h3>Don't build a Copilot Credits dashboard</h3>
+      <dl><dt>Why</dt><dd>Credit totals are already shown by environment, agent, user and feature in the Power Platform admin center, per agent in Copilot Studio, in Cost management in the Microsoft 365 admin center, and through an API.</dd>
+      <dt>Kept</dt><dd>Joining credits to how each conversation ended is still a gap, but it needs paid credits to prove, so it stays a written idea for now.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">03<span>19 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Problem selection</span></div>
+      <h3>Build the leaver impact check</h3>
+      <dl><dt>Why</dt><dd>Leavers happen everywhere, every month. Microsoft's tools act after the person has gone. The data is reachable through admin APIs, and the effect can be proven by blocking a test user and reading Power Automate's own run history.</dd>
+      <dt>Instead of</dt><dd>A SharePoint knowledge source readiness check (higher overlap risk with a Microsoft status view) and Dataverse for Teams retirement triage (strong date, thin demand).</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">04<span>19 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Testing</span></div>
+      <h3>Free trial tenant only, predictions before every test</h3>
+      <dl><dt>What</dt><dd>Microsoft 365 Business Basic trial, a trial environment with Dataverse, no paid add-ons. Every expected result is written down with a time before the test runs.</dd>
+      <dt>Why</dt><dd>Anyone can repeat it, and matching Microsoft's own screens is the only proof that counts.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">05<span>20 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Testing</span></div>
+      <h3>Flows first, agents in a second round</h3>
+      <dl><dt>Why</dt><dd>Keeping round 1 to six flows meant the block test could run and be scored the same evening. Agents that use the maker's credentials get their own round with a new test user.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">06<span>20 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Testing</span></div>
+      <h3>Test with Block sign-in only</h3>
+      <dl><dt>Why</dt><dd>It is usually the first thing IT does on a last day. No password reset, session revoke, licence removal or account deletion, so the result shows what one normal step does on its own.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">07<span>21 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Result</span></div>
+      <h3>Report the timing miss and the odd SharePoint run as they are</h3>
+      <dl><dt>What</dt><dd>6 of 6 outcomes matched, but failures came within minutes, not the 90 I expected, and one SharePoint run succeeded 37 minutes after the block. Both are written up as found.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">08<span>21 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Security</span></div>
+      <h3>Browser sign-in, read-only, nothing kept outside the admin's machine</h3>
+      <dl><dt>What</dt><dd>Sign-in that uses a code typed on another device was blocked by the tenant's security defaults, and that block is sensible, so the script uses a normal browser sign-in. It only reads. Results are written to a local folder that is never committed.</dd>
+      <dt>Next</dt><dd>Its own app registration with read-only permissions, and a version that reads an admin export file and needs no sign-in at all.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">09<span>21 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Naming</span></div>
+      <h3>Call it Leaver Impact Check</h3>
+      <dl><dt>Why</dt><dd>Plain words for what it does. Microsoft's trademark guidelines ask third parties not to use Microsoft product names in their own product names, so the name stays independent, and compatibility is described in text only.</dd></dl>
+    </div></article>
+
+  </div>
+</section>
+</div>

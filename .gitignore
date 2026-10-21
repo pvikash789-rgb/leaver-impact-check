@@ -1,0 +1,15 @@
+# Secrets
+.env
+*.token
+
+# Results from real tenants
+out/
+output/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store

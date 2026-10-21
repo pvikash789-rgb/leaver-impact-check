@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaver Impact Check Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a case-study column. Problem first, then the discovery funnel, approach, build phases, and a dated journal at the end. */
+:root{
+  --bg:#f4f5f2; --surface:#ffffff; --fg:#1d2320; --muted:#5d6862; --line:#d9ded9;
+  --accent:#2e5c8a; --accent-soft:#e3ecf5; --kill:#9a3b2f; --kill-soft:#f6e6e3; --ok:#2c6b3f; --ok-soft:#e3f1e6; --warn:#8a5a00; --warn-soft:#fbf0d9;
+  --display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#131614; --surface:#1b201d; --fg:#e5e9e6; --muted:#9ca8a1; --line:#2d3530;
+  --accent:#8db8e3; --accent-soft:#1b2a3a; --kill:#e8988c; --kill-soft:#33201d; --ok:#7fc994; --ok-soft:#18291d; --warn:#e8b65c; --warn-soft:#2e2615; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131614; --surface:#1b201d; --fg:#e5e9e6; --muted:#9ca8a1; --line:#2d3530;
+  --accent:#8db8e3; --accent-soft:#1b2a3a; --kill:#e8988c; --kill-soft:#33201d; --ok:#7fc994; --ok-soft:#18291d; --warn:#e8b65c; --warn-soft:#2e2615; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15.5px;line-height:1.65}
+.wrap{max-width:780px;margin:0 auto;padding-inline:16px;padding-block:44px 72px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:2.3rem;font-weight:600}
+h2{font-size:1.4rem;font-weight:600}
+h3{font-size:1.05rem;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:10px}
+.lede{font-size:1.08rem;color:var(--fg)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.fact{font-family:var(--mono);font-size:.78rem;border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:3px 8px;color:var(--muted)}
+.fact b{color:var(--fg);font-weight:500}
+section{display:flex;flex-direction:column;gap:14px}
+.callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.funnel{display:flex;flex-direction:column;gap:6px}
+.stage{display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px;align-items:start;padding:10px 0;border-bottom:1px dashed var(--line)}
+.stage:last-child{border-bottom:none}
+.count{font-family:var(--display);font-size:1.6rem;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1;text-align:right}
+.stage p{font-size:.95rem}
+.stage .sub{color:var(--muted);font-size:.88rem}
+.kills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.kills{grid-template-columns:1fr}}
+.kill{background:var(--kill-soft);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.kill .why{font-size:.88rem}
+.kill .lesson{font-size:.84rem;color:var(--muted)}
+.tag{font-family:var(--mono);font-size:.7rem;color:var(--kill);text-transform:uppercase;letter-spacing:.06em}
+ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.phases{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.phase{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+@media (max-width:540px){.phase{grid-template-columns:1fr;gap:4px}}
+.phase .when{font-family:var(--mono);font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.phase .body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pill{font-family:var(--mono);font-size:.7rem;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill.now{background:var(--accent-soft);color:var(--accent)}
+.pill.next{border:1px solid var(--line);color:var(--muted)}
+.pill.done{background:var(--ok-soft);color:var(--ok)}
+.metrics{width:100%;border-collapse:collapse;font-size:.92rem}
+.tablewrap{overflow-x:auto}
+.metrics th,.metrics td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.metrics th{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.metrics td.v{font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.journal{display:flex;flex-direction:column;gap:18px}
+.entry{display:flex;flex-direction:column;gap:8px;padding-left:16px;border-left:2px solid var(--line)}
+.entry .date{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+a{color:var(--accent);text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{font-size:.86rem;color:var(--muted)}
+.sources li{font-size:.9rem}
+</style>
+</head>
+<body>
+<nav style="max-width:860px;margin:0 auto;padding:16px 16px 0;font-family:var(--mono);font-size:.8rem"><a href="decisions.html">Decision log &rarr;</a> &middot; <a href="https://github.com/pvikash789-rgb/leaver-impact-check">Code on GitHub</a></nav>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Build journal · Vikash Kumar · Work in progress</div>
+  <h1>Leaver Impact Check</h1>
+  <p class="lede">Before someone leaves, see which Power Automate flows run on their login and will stop working the day their account is switched off.</p>
+  <div class="facts">
+    <span class="fact">Started <b>19 Oct 2026</b></span>
+    <span class="fact">Lab test <b>20 Oct 2026</b></span>
+    <span class="fact">Current phase <b>0 · Validation passed</b></span>
+  </div>
+</header>
+
+<section aria-labelledby="problem">
+  <h2 id="problem">The problem</h2>
+  <p>A cloud flow in Power Automate signs in to services like Outlook or SharePoint through a connection. A connection usually belongs to the person who created it. When that person leaves and IT blocks their sign-in, every flow that runs on their connections starts failing.</p>
+  <p>Adding a co-owner is the common advice for keeping a flow alive. A co-owner can edit the flow, but the flow keeps running on the original owner's connection until someone swaps it. In my test, a co-owned flow failed on its first run after the owner's sign-in was blocked and kept failing, still switched on, for more than a day.</p>
+  <p>Microsoft already helps after the fact: recommendations for orphaned flows, an API to reassign agents, and an Agentic Center of Enablement in preview that finds resources without an owner. What I could not find is a list prepared before the last day, saying "these flows run on this person's login and will break".</p>
+  <div class="callout">
+    <h3>What the tool will do</h3>
+    <p>An admin enters the person who is leaving. The tool lists every flow that runs on that person's connections, across environments, including flows inside solutions, and separates them from flows the person only co-owns. Read-only. Nothing is changed, and nothing from the tenant is kept outside the admin's own machine.</p>
+  </div>
+</section>
+
+<section aria-labelledby="discovery">
+  <h2 id="discovery">How I found it</h2>
+  <p>I wanted to build something real on Microsoft's platform rather than write about it. The problem had to be useful and buildable, whatever my own background.</p>
+  <div class="funnel">
+    <div class="stage"><div class="count">~18</div><div><p>Ideas scouted across Microsoft 365 Copilot admin, Copilot Studio, Power Platform governance, Teams admin and Dynamics 365.</p><p class="sub">Sources: Microsoft Learn, the Microsoft 365 roadmap, message center posts, Tech Community and Microsoft Q&amp;A threads, AppSource and GitHub.</p></div></div>
+    <div class="stage"><div class="count">5</div><div><p>Passed the checks: evidence of demand, not already shipped, data reachable through a public API, value can be measured, buildable in two to three weeks on a free trial tenant.</p><p class="sub">Shortlist: this tool, credits per outcome for Copilot Studio agents, a SharePoint knowledge source readiness check, Dataverse for Teams retirement triage, and a connector policy impact preview.</p></div></div>
+    <div class="stage"><div class="count">1</div><div><p>Chosen: leaver impact.</p><p class="sub">It happens in every organisation every month, Microsoft's tools act only after the person has gone, and a free lab can prove it against Microsoft's own run history.</p></div></div>
+  </div>
+</section>
+
+<section aria-labelledby="deadends">
+  <h2 id="deadends">Ideas I dropped and why</h2>
+  <div class="kills">
+    <div class="kill"><span class="tag">Already shipped</span><h3>Copilot Credits dashboard</h3><p class="why">Credits are already shown by environment, agent, user and feature in the Power Platform admin center, per agent in Copilot Studio, and through an API.</p><p class="lesson">The gap, if any, sits next to the existing view.</p></div>
+    <div class="kill"><span class="tag">Already shipped</span><h3>Flow failure alerts</h3><p class="why">Power Automate already has per-run failure alerts, a summary email and a Monitor view of failed runs.</p><p class="lesson">Alerts after a failure are covered. Seeing it coming is not.</p></div>
+    <div class="kill"><span class="tag">Already shipped</span><h3>Agent evaluation tests</h3><p class="why">Agent evaluation in Copilot Studio is generally available, with an API and a published pipeline sample.</p><p class="lesson">Check Learn and the roadmap before ranking.</p></div>
+  </div>
+  <p class="note">Also set aside: agent inventory (Agent 365 registry), unused Copilot licences (crowded), SharePoint oversharing (SharePoint Advanced Management), Teams call quality (redesigned reports), Teams Rooms (needs hardware), Dynamics 365 routing diagnostics (built in).</p>
+</section>
+
+<section aria-labelledby="method">
+  <h2 id="method">How I test</h2>
+  <p>Every claim is checked against Microsoft's own screens. I write down what I expect before the test runs, then compare it with the run history Power Automate shows.</p>
+  <ul>
+    <li>A Microsoft 365 Business Basic trial tenant with four accounts: an admin, two makers and one leaver.</li>
+    <li>Six flows, each built to show one pattern: the leaver's own login, a co-owner, a co-owner who swapped in their own login, a control flow by another maker, a SharePoint flow, and a flow inside a solution.</li>
+    <li>The test step is the one IT usually takes first on a last day: <b>Block sign-in</b> in the Microsoft 365 admin center. Nothing else is changed.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="round1">
+  <h2 id="round1">Round 1 results</h2>
+  <p>Predictions were written at 17:15 IST on 20 October, after every flow had run cleanly for two hours. The leaver's sign-in was blocked at 19:38.</p>
+  <div class="tablewrap">
+    <table class="metrics">
+      <thead><tr><th>Case</th><th>Runs on</th><th>Predicted</th><th>What Power Automate showed</th></tr></thead>
+      <tbody>
+        <tr><td class="v">L-01</td><td>Leaver's login</td><td>Fails</td><td>No successful run after the block</td></tr>
+        <tr><td class="v">L-02</td><td>Leaver's login, co-owned</td><td>Fails</td><td>Failed every run from 19:44, still switched on</td></tr>
+        <tr><td class="v">L-03</td><td>Co-owner's login (swapped)</td><td>Keeps working</td><td>Kept working</td></tr>
+        <tr><td class="v">L-04</td><td>Another maker (control)</td><td>Keeps working</td><td>Kept working</td></tr>
+        <tr><td class="v">L-05</td><td>Leaver's SharePoint login</td><td>Fails</td><td>Failed at 19:45 and 20:00, succeeded once at 20:15, then failed</td></tr>
+        <tr><td class="v">L-06</td><td>Leaver's login, inside a solution</td><td>Fails</td><td>No successful run after the block</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li><b>6 of 6 outcomes matched.</b> My timing was wrong: I expected failures within about 90 minutes, and the Outlook flows failed on the first run after the block, six minutes later.</li>
+    <li><b>The error points elsewhere.</b> The failed step reads "Unauthorized", and the banner says the connection "needs to be signed-in again" and that "the most common cause is a changed password or a policy set by your tenant administrator". It doesn't mention that the owner has left, and signing in again as that person isn't possible.</li>
+    <li><b>The co-owner wasn't told.</b> The co-owner got an email when they were added. Over the next day there was no email to them about L-02 failing. A failure summary that did arrive listed only a flow where they were the primary owner. That is one observation, to be confirmed.</li>
+    <li><b>Still open:</b> why L-05 succeeded once at 20:15.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="round1b">
+  <h2 id="round1b">Can a tool see it coming?</h2>
+  <p>The second question was whether an outside tool can find these flows before anyone leaves, using only public admin APIs and read access. Prediction, written at 21:55 on 21 October: it should name L-01, L-02, L-05 and L-06 and nothing else.</p>
+  <p>The script listed exactly those four, left out L-03 and L-04, and resolved the solution flow's connection reference to the leaver's connection. All four were still shown as started after a day of failures.</p>
+  <p class="note">The first version signs in through a browser as an admin and reads environments, flows, connections and connection references. A sign-in that uses a code typed on another device was blocked by the tenant's security defaults, so the script uses a normal browser sign-in.</p>
+</section>
+
+<section aria-labelledby="phases">
+  <h2 id="phases">Plan</h2>
+  <div class="phases">
+    <div class="phase"><div class="when">19 to 21 Oct<span class="pill done">Done</span></div><div class="body"><h3>0 · Validation</h3><p>Lab, predictions, block test, and a read-only script that names the flows at risk.</p></div></div>
+    <div class="phase"><div class="when">Next<span class="pill now">Now</span></div><div class="body"><h3>1 · Report</h3><p>A clear report per leaver: flows that will break, flows that are safe, and who could take each one over. Its own app registration with read-only permissions, and a version that works from an admin export file without any sign-in.</p></div></div>
+    <div class="phase"><div class="when">Later<span class="pill next">Next</span></div><div class="body"><h3>2 · Agents</h3><p>Round 2 of the lab with Copilot Studio agents that use the maker's credentials.</p></div></div>
+  </div>
+</section>
+
+<section aria-labelledby="journal">
+  <h2 id="journal">Journal</h2>
+  <div class="journal">
+    <div class="entry"><span class="date">21 Oct 2026</span><p>The script named exactly the four flows that broke. Separately, the control flow's connection stopped working at 16:00 with a different error ("Unexpected connection parameter set name"), unrelated to the leaver; a fresh sign-in fixed it. The create-connection screen also looked different from the day before. I don't know the cause and I'm not drawing conclusions from it.</p></div>
+    <div class="entry"><span class="date">20 Oct 2026</span><p>Built the lab, wrote the predictions, blocked the leaver's sign-in at 19:38 and scored all six cases against Power Automate's run history.</p></div>
+    <div class="entry"><span class="date">19 Oct 2026</span><p>Scouted about 18 ideas, shortlisted five, picked this one. Created a trial tenant.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="sources">
+  <h2 id="sources">Sources</h2>
+  <ul class="sources">
+    <li><a href="https://learn.microsoft.com/en-us/power-platform/admin/power-automate-licensing/when-flows-are-turned-off">When flows are turned off (Microsoft Learn)</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/troubleshoot/power-platform/power-automate/flow-management/manage-orphan-flow-when-owner-leaves-org">Manage orphan flows when the owner leaves (Microsoft Learn)</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/power-platform/release-plan/2026wave1/power-platform-governance-administration/automate-governance-agentic-center-enablement">Agentic Center of Enablement (release plan)</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/power-platform/admin/power-platform-inventory">Power Platform inventory (Microsoft Learn)</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/entra/id-governance/lifecycle-workflow-tasks">Lifecycle workflow tasks (Microsoft Learn)</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-api-reassign-ownership-orphaned-agent">Reassign orphaned agents (Microsoft Learn)</a></li>
+    <li><a href="https://spaces.collab365.com/posts/shared-power-automate-flows-can-still-die-with-the-bY9vVm">Shared flows can still die with the person who built them (Collab365)</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/answers/questions/5912471/how-to-transfer-ownership-of-an-agent-created-in-c">Transfer ownership of a Copilot Studio agent (Microsoft Q&amp;A)</a></li>
+  </ul>
+</section>
+
+</div>
+<footer style="max-width:860px;margin:0 auto;padding:0 16px 40px;font-size:.8rem;color:var(--muted)">Microsoft, Power Automate, Power Platform and Copilot Studio are trademarks of the Microsoft group of companies. This is an independent project and is not affiliated with, sponsored or endorsed by Microsoft.</footer>
+</body>
+</html>
