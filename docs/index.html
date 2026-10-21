@@ -153,6 +153,17 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   </ul>
 </section>
 
+<section aria-labelledby="native">
+  <h2 id="native">What the admin center shows</h2>
+  <p>I checked Maker inventory in the Power Platform admin center by hand on 21 October, a day after the block.</p>
+  <ul>
+    <li><b>Owner, not login.</b> The available columns cover owner, creator, last modified by, connector type, environment and status. None shows whose connection a flow runs on.</li>
+    <li><b>One false alarm.</b> Filtering by the leaver as owner gives 5 flows. Only 4 broke. L-03 is owned by the leaver but runs on the co-owner's login, so it kept working.</li>
+    <li><b>Status.</b> Every flow showed "Activated", including the four that had been failing for a day.</li>
+    <li><b>Recommendations.</b> The Actions page listed 7 recommendations, none about these flows or the blocked user. The Agentic Center of Enablement preview needs a managed environment; I turned one on and will check its insights next.</li>
+  </ul>
+</section>
+
 <section aria-labelledby="round1b">
   <h2 id="round1b">Can a tool see it coming?</h2>
   <p>The second question was whether an outside tool can find these flows before anyone leaves, using only public admin APIs and read access. Prediction, written at 21:55 on 21 October: it should name L-01, L-02, L-05 and L-06 and nothing else.</p>
@@ -172,6 +183,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <section aria-labelledby="journal">
   <h2 id="journal">Journal</h2>
   <div class="journal">
+    <div class="entry"><span class="date">21 Oct 2026, late</span><p>Checked Maker inventory and Recommendations by hand. Inventory shows owners, not logins, and marks the failing flows as Activated.</p></div>
     <div class="entry"><span class="date">21 Oct 2026</span><p>The script named exactly the four flows that broke. Separately, the control flow's connection stopped working at 16:00 with a different error ("Unexpected connection parameter set name"), unrelated to the leaver; a fresh sign-in fixed it. The create-connection screen also looked different from the day before. I don't know the cause and I'm not drawing conclusions from it.</p></div>
     <div class="entry"><span class="date">20 Oct 2026</span><p>Built the lab, wrote the predictions, blocked the leaver's sign-in at 19:38 and scored all six cases against Power Automate's run history.</p></div>
     <div class="entry"><span class="date">19 Oct 2026</span><p>Scouted about 18 ideas, shortlisted five, picked this one. Created a trial tenant.</p></div>
