@@ -19,8 +19,7 @@ import json
 import os
 import sys
 
-import msal
-import requests
+from report import render_html
 
 CLIENT_ID = "1950a258-227b-4e31-a9cf-717495945fc2"
 SCOPE_PA = ["https://service.powerapps.com//.default"]
@@ -32,6 +31,8 @@ FLOWS_URL = ("https://api.flow.microsoft.com/providers/Microsoft.ProcessSimple"
              "/scopes/admin/environments/{env}/v2/flows?api-version=2016-11-01")
 FLOW_URL = ("https://api.flow.microsoft.com/providers/Microsoft.ProcessSimple"
             "/scopes/admin/environments/{env}/flows/{flow}?api-version=2016-11-01")
+FLOW_PERMS_URL = ("https://api.flow.microsoft.com/providers/Microsoft.ProcessSimple"
+                  "/scopes/admin/environments/{env}/flows/{flow}/permissions?api-version=2016-11-01")
 CONNS_URL = ("https://api.powerapps.com/providers/Microsoft.PowerApps"
              "/scopes/admin/environments/{env}/connections?api-version=2016-11-01")
 
@@ -42,6 +43,7 @@ def say(msg=""):
 
 class Session:
     def __init__(self, tenant):
+        import msal  # only needed for a live scan
         self.app = msal.PublicClientApplication(
             CLIENT_ID, authority=f"https://login.microsoftonline.com/{tenant}")
         self.account = None
@@ -70,6 +72,7 @@ class Session:
 
 def get_all(url, token, label):
     """GET with paging. Returns list of items, or None if the call failed."""
+    import requests  # only needed for a live scan
     items = []
     while url:
         r = requests.get(url, headers={"Authorization": f"Bearer {token}"}, timeout=60)
@@ -108,10 +111,20 @@ def conn_refs(flow_detail):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--tenant", required=True)
-    ap.add_argument("--leaver", required=True, help="UPN of the person leaving")
+    ap.add_argument("--tenant", help="tenant domain, e.g. contoso.onmicrosoft.com (live scan)")
+    ap.add_argument("--leaver", help="UPN of the person leaving (live scan)")
     ap.add_argument("--admin", default=None, help="admin UPN to pre-fill on the sign-in page")
+    ap.add_argument("--from-json", help="render a report from a saved result instead of scanning")
+    ap.add_argument("--html", help="also write an HTML report to this path")
     args = ap.parse_args()
+
+    if args.from_json:
+        with open(args.from_json) as fh:
+            report = json.load(fh)
+        write_html(report, args.html or "out/report.html")
+        return
+    if not (args.tenant and args.leaver):
+        ap.error("--tenant and --leaver are required for a live scan")
     leaver = norm(args.leaver)
 
     s = Session(args.tenant)
@@ -177,8 +190,16 @@ def main():
             detail = get_all(FLOW_URL.format(env=env_id, flow=f["name"]), tok_flow,
                              f"flow {fp.get('displayName')}") or {}
             creator_id = (fp.get("creator") or {}).get("objectId") or (fp.get("creator") or {}).get("userId")
-            row = {"flow": fp.get("displayName"), "state": fp.get("state"),
-                   "creator": users.get(creator_id, creator_id), "connections": []}
+            perms = get_all(FLOW_PERMS_URL.format(env=env_id, flow=f["name"]), tok_flow,
+                            f"owners of {fp.get('displayName')}") or []
+            owners = []
+            for pm in perms if isinstance(perms, list) else []:
+                pp = pm.get("properties", {})
+                pid = (pp.get("principal") or {}).get("id")
+                if pid and pid != creator_id:
+                    owners.append({"who": users.get(pid, pid), "role": pp.get("roleName")})
+            row = {"flow": fp.get("displayName"), "environment": env_name, "state": fp.get("state"),
+                   "creator": users.get(creator_id, creator_id), "co_owners": owners, "connections": []}
             for connector, cname, logical in conn_refs(detail):
                 if not cname and logical:
                     cname = ref_to_conn.get(logical)
@@ -210,6 +231,14 @@ def main():
     with open(path, "w") as fh:
         json.dump(report, fh, indent=2)
     say(f"Full result saved to {path} (local only, do not commit).")
+    write_html(report, args.html or path.replace(".json", ".html"))
+
+
+def write_html(report, path):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w") as fh:
+        fh.write(render_html(report))
+    say(f"Report written to {path}")
 
 
 if __name__ == "__main__":

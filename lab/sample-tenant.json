@@ -1,0 +1,92 @@
+{
+  "sample": true,
+  "generated": "2026-10-22T19:45:00",
+  "leaver": "priya.nair@kestrelfreight.example",
+  "environments": [
+    {
+      "environment": "Kestrel Freight (default)",
+      "flows": [
+        {
+          "flow": "Leave request to Excel and manager email",
+          "state": "Started",
+          "creator": "priya.nair@kestrelfreight.example",
+          "co_owners": [{"who": "arjun.mehta@kestrelfreight.example", "role": "CanEdit"}],
+          "connections": [
+            {"connector": "shared_office365", "connection": "c-101", "via_reference": null, "runs_as": "priya.nair@kestrelfreight.example", "status": "Connected"},
+            {"connector": "shared_excelonlinebusiness", "connection": "c-102", "via_reference": null, "runs_as": "priya.nair@kestrelfreight.example", "status": "Connected"}
+          ]
+        },
+        {
+          "flow": "Daily overdue invoice reminder",
+          "state": "Started",
+          "creator": "priya.nair@kestrelfreight.example",
+          "co_owners": [],
+          "connections": [
+            {"connector": "shared_office365", "connection": "c-101", "via_reference": null, "runs_as": "priya.nair@kestrelfreight.example", "status": "Connected"}
+          ]
+        },
+        {
+          "flow": "New vendor form to SharePoint list",
+          "state": "Started",
+          "creator": "priya.nair@kestrelfreight.example",
+          "co_owners": [{"who": "lena.fischer@kestrelfreight.example", "role": "CanEdit"}],
+          "connections": [
+            {"connector": "shared_microsoftforms", "connection": "c-103", "via_reference": null, "runs_as": "priya.nair@kestrelfreight.example", "status": "Connected"},
+            {"connector": "shared_sharepointonline", "connection": "c-104", "via_reference": null, "runs_as": "priya.nair@kestrelfreight.example", "status": "Connected"}
+          ]
+        },
+        {
+          "flow": "Weekly shipments summary to the ops channel",
+          "state": "Started",
+          "creator": "priya.nair@kestrelfreight.example",
+          "co_owners": [{"who": "arjun.mehta@kestrelfreight.example", "role": "CanEdit"}],
+          "connections": [
+            {"connector": "shared_teams", "connection": "c-201", "via_reference": null, "runs_as": "arjun.mehta@kestrelfreight.example", "status": "Connected"}
+          ]
+        },
+        {
+          "flow": "Customer complaint triage",
+          "state": "Started",
+          "creator": "lena.fischer@kestrelfreight.example",
+          "co_owners": [],
+          "connections": [
+            {"connector": "shared_office365", "connection": "c-301", "via_reference": null, "runs_as": "lena.fischer@kestrelfreight.example", "status": "Connected"}
+          ]
+        }
+      ]
+    },
+    {
+      "environment": "Finance",
+      "flows": [
+        {
+          "flow": "Contract approval routing",
+          "state": "Started",
+          "creator": "priya.nair@kestrelfreight.example",
+          "co_owners": [],
+          "connections": [
+            {"connector": "shared_approvals", "connection": "c-401", "via_reference": "kf_approvals_ref", "runs_as": "priya.nair@kestrelfreight.example", "status": "Connected"},
+            {"connector": "shared_office365", "connection": "c-402", "via_reference": "kf_outlook_ref", "runs_as": "priya.nair@kestrelfreight.example", "status": "Connected"}
+          ]
+        },
+        {
+          "flow": "Month-end close checklist",
+          "state": "Started",
+          "creator": "priya.nair@kestrelfreight.example",
+          "co_owners": [],
+          "connections": [
+            {"connector": "shared_sharepointonline", "connection": "c-501", "via_reference": "kf_sp_ref", "runs_as": "finance.automation@kestrelfreight.example", "status": "Connected"}
+          ]
+        },
+        {
+          "flow": "Expense export to finance system",
+          "state": "Started",
+          "creator": "tomas.ruiz@kestrelfreight.example",
+          "co_owners": [],
+          "connections": [
+            {"connector": "shared_sql", "connection": "c-601", "via_reference": "kf_sql_ref", "runs_as": "tomas.ruiz@kestrelfreight.example", "status": "Connected"}
+          ]
+        }
+      ]
+    }
+  ]
+}

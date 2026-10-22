@@ -6,6 +6,7 @@ Works with Microsoft Power Automate and Power Platform. Independent project, not
 
 **Build journal:** https://pvikash789-rgb.github.io/leaver-impact-check/
 **Decision log:** https://pvikash789-rgb.github.io/leaver-impact-check/decisions.html
+**Sample report:** https://pvikash789-rgb.github.io/leaver-impact-check/demo.html (made-up company)
 
 ## Why
 
@@ -21,7 +22,7 @@ Details and caveats are in the build journal.
 
 ## What it does today
 
-`leaver_impact_check.py` signs in as a Power Platform admin, reads environments, flows, connections and (for solution flows) connection references, and lists the flows that run on the given person's connections. It only reads. Results are saved to a local `out/` folder, which is ignored by git.
+`leaver_impact_check.py` signs in as a Power Platform admin, reads environments, flows, connections and (for solution flows) connection references, and lists the flows that run on the given person's connections. It only reads. It writes a JSON result and a one-page HTML report (will stop working, owned but safe, suggested next owner from existing co-owners) to a local `out/` folder, which is ignored by git.
 
 In the test tenant it named exactly the four flows that later broke and left out the two that didn't.
 
@@ -38,11 +39,18 @@ python leaver_impact_check.py --tenant yourtenant.onmicrosoft.com --leaver perso
 
 A browser window opens for sign-in. No passwords or tokens are stored.
 
+To render a report from a saved result, without signing in:
+
+```bash
+python leaver_impact_check.py --from-json lab/sample-tenant.json --html out/sample.html
+```
+
 ## Limits (spike version)
 
 - Signs in with the public client ID that Microsoft's Power Apps admin PowerShell module uses. A release will use its own app registration with read-only permissions.
 - Matches the leaver by the sign-in name recorded on each connection.
 - Flows only. Copilot Studio agents come next.
+- Co-owner lookup uses the flow permissions admin API and has not yet been run against the test tenant.
 - Tested on one small trial tenant.
 
 ## Lab

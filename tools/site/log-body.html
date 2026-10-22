@@ -1,6 +1,6 @@
 <div class="wrap">
 <header>
-  <div class="eyebrow">{{NAME}} · Decision log · Vikash Kumar · Last updated 21 Oct 2026</div>
+  <div class="eyebrow">{{NAME}} · Decision log · Vikash Kumar · Last updated 22 Oct 2026</div>
   <h1>Decision log</h1>
   <p>The main product decisions behind {{NAME}}, with the reasoning and the alternatives I considered. Newest at the bottom.</p>
 </header>
@@ -73,6 +73,13 @@
       <div class="meta"><span class="tag">Positioning</span></div>
       <h3>Claim the login view, not "Microsoft shows nothing"</h3>
       <dl><dt>Why</dt><dd>Maker inventory already shows each flow's owner. What it doesn't show is whose connection the flow runs on, and that decides whether it breaks. Filtering by owner flagged 5 flows; 4 broke. The tool builds next to the owner view instead of claiming there is none.</dd></dl>
+    </div></article>
+
+    <article class="entry"><div class="id">11<span>22 Oct</span></div><div class="body">
+      <div class="meta"><span class="tag">Report</span></div>
+      <h3>One page per leaver, split into "will stop" and "owned but safe"</h3>
+      <dl><dt>Why</dt><dd>The admin's real question is what to hand over before the last day. Showing owned-but-safe flows separately explains why an owner list over-counts, and the suggested next owner starts from existing co-owners, with a reminder that co-ownership alone doesn't keep a flow running.</dd>
+      <dt>Demo</dt><dd>The public sample uses a made-up company so no data from the test tenant is published. It is rendered by the same code that runs against a live tenant.</dd></dl>
     </div></article>
 
   </div>

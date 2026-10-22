@@ -84,8 +84,9 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <div class="facts">
     <span class="fact">Started <b>19 Oct 2026</b></span>
     <span class="fact">Lab test <b>20 Oct 2026</b></span>
-    <span class="fact">Current phase <b>0 · Validation passed</b></span>
+    <span class="fact">Current phase <b>1 · Report</b></span>
   </div>
+  <p><a href="demo.html">See a sample report</a> (made-up company, produced by the same script)</p>
 </header>
 
 <section aria-labelledby="problem">
@@ -160,7 +161,8 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     <li><b>Owner, not login.</b> The available columns cover owner, creator, last modified by, connector type, environment and status. None shows whose connection a flow runs on.</li>
     <li><b>One false alarm.</b> Filtering by the leaver as owner gives 5 flows. Only 4 broke. L-03 is owned by the leaver but runs on the co-owner's login, so it kept working.</li>
     <li><b>Status.</b> Every flow showed "Activated", including the four that had been failing for a day.</li>
-    <li><b>Recommendations.</b> The Actions page listed 7 recommendations, none about these flows or the blocked user. The Agentic Center of Enablement preview needs a managed environment; I turned one on and will check its insights next.</li>
+    <li><b>Recommendations.</b> The Actions page listed 7 recommendations, none about these flows or the blocked user.</li>
+    <li><b>Agentic Center of Enablement.</b> The preview is meant to switch on once a managed environment exists. I turned one on; about 20 hours later its pages had not appeared in this trial tenant, so I couldn't test whether it would flag these flows. It is a preview and may simply not have reached the tenant yet.</li>
   </ul>
 </section>
 
@@ -175,7 +177,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <h2 id="phases">Plan</h2>
   <div class="phases">
     <div class="phase"><div class="when">19 to 21 Oct<span class="pill done">Done</span></div><div class="body"><h3>0 · Validation</h3><p>Lab, predictions, block test, and a read-only script that names the flows at risk.</p></div></div>
-    <div class="phase"><div class="when">Next<span class="pill now">Now</span></div><div class="body"><h3>1 · Report</h3><p>A clear report per leaver: flows that will break, flows that are safe, and who could take each one over. Its own app registration with read-only permissions, and a version that works from an admin export file without any sign-in.</p></div></div>
+    <div class="phase"><div class="when">22 Oct<span class="pill now">Now</span></div><div class="body"><h3>1 · Report</h3><p>A clear report per leaver: flows that will break, flows that are safe, and who could take each one over (<a href="demo.html">sample</a>). Next: its own app registration with read-only permissions, and a version that works from an admin export file without any sign-in.</p></div></div>
     <div class="phase"><div class="when">Later<span class="pill next">Next</span></div><div class="body"><h3>2 · Agents</h3><p>Round 2 of the lab with Copilot Studio agents that use the maker's credentials.</p></div></div>
   </div>
 </section>
@@ -183,6 +185,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <section aria-labelledby="journal">
   <h2 id="journal">Journal</h2>
   <div class="journal">
+    <div class="entry"><span class="date">22 Oct 2026</span><p>The script now writes a one-page report: flows that will stop working, flows the person owns that are safe, and a suggested next owner from existing co-owners. Published a <a href="demo.html">sample</a> using a made-up company.</p></div>
     <div class="entry"><span class="date">21 Oct 2026, late</span><p>Checked Maker inventory and Recommendations by hand. Inventory shows owners, not logins, and marks the failing flows as Activated.</p></div>
     <div class="entry"><span class="date">21 Oct 2026</span><p>The script named exactly the four flows that broke. Separately, the control flow's connection stopped working at 16:00 with a different error ("Unexpected connection parameter set name"), unrelated to the leaver; a fresh sign-in fixed it. The create-connection screen also looked different from the day before. I don't know the cause and I'm not drawing conclusions from it.</p></div>
     <div class="entry"><span class="date">20 Oct 2026</span><p>Built the lab, wrote the predictions, blocked the leaver's sign-in at 19:38 and scored all six cases against Power Automate's run history.</p></div>
